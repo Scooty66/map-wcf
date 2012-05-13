@@ -10,7 +10,7 @@
 </div>
 {include file='gmapConstants'}
 <script src="{@RELATIVE_WCF_DIR}js/gmap/Map3.class.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;language={@$this->language->getLanguageCode()}"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&amp;language={@$this->language->getLanguageCode()}"></script>
 <script type="text/javascript">
 	//<![CDATA[
         onloadEvents.push(function() {
