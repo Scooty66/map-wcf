@@ -36,7 +36,7 @@ class GMapUserProfileEditFormListener implements EventListener {
 			// build search query
 			$search = array();
 			foreach($api->getFields() as $key) {
-				if(isset($this->eventObj->values[$key])) {
+				if(isset($this->eventObj->values[$key]) && !empty($this->eventObj->values[$key])) {
 					$search[] = $this->eventObj->values[$key];
 				}
 			}
