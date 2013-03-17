@@ -77,7 +77,7 @@ class MapPage extends AbstractPage {
 			'maxLifetime' => $maxLifetime
 		);
 
-		if(($val = WCF::getCache()->getCacheSource()->get($cacheResource)) === null) {
+		if(($val = @WCF::getCache()->getCacheSource()->get($cacheResource)) === null) {
 			$val = false;
 			$val = $this->$method();
 			WCF::getCache()->getCacheSource()->set($cacheResource, $val);
