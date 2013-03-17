@@ -78,20 +78,19 @@ class GmapApi extends DatabaseObject {
 			return $this->cache_search[$lookupstring];
 		}
 		
-		$url = "http://maps.google.com/maps/geo?q=".$lookupstring."&output=csv";
+		$url = 'http://maps.googleapis.com/maps/api/geocode/json?address='.$lookupstring.'&sensor=false';
 		
 		require_once(WCF_DIR.'lib/util/FileUtil.class.php');
 		$res = array();
 		try {
 			$tmp = FileUtil::downloadFileFromHttp($url, 'gmap.search');
-			foreach(file($tmp) as $row) {
-				if (preg_match('/^200,[^,]+,([^,]+),([^,]+)$/', $row, $hits)) {
-					$res = array(
-						'lat' => trim($hits[1]),
-						'lon' => trim($hits[2])
-					);
-					break;
-				}
+			$tmp = @json_decode(@file_get_contents($tmp));
+			if (isset($tmp->results[0]->geometry->location)) {
+				$res = $tmp->results[0]->geometry->location;
+				$res = array(
+					'lat' => trim($res->lat),
+					'lon' => trim($res->lng)
+				);
 			}
 			@unlink($tmp);
 		} catch(Exception $e) {
