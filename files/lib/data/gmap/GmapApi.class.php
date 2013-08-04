@@ -1,4 +1,5 @@
 <?php
+require_once(WCF_DIR.'lib/data/gmap/GmapApiKey.class.php');
 
 /**
  * gets several positions and returns a clustered array
@@ -8,12 +9,14 @@
  */
 class GmapApi extends DatabaseObject {
 	protected $cache_search = array();
+	private $gmap_api_key = '';
 	
 	/**
-	 *
+	 * empty constructor, its not a real write model
 	 */
 	public function __construct() {
-		
+		$gmapApiKey = new GmapApiKey();
+		$this->gmap_api_key = $gmapApiKey->getKey();  // @todo: pass current url if possible
 	}
 
 	/**
@@ -79,6 +82,9 @@ class GmapApi extends DatabaseObject {
 		}
 		
 		$url = 'http://maps.googleapis.com/maps/api/geocode/json?address='.$lookupstring.'&sensor=false';
+		if ($this->gmap_api_key) {
+			$url .= '&key='.$this->gmap_api_key;
+		}
 		
 		require_once(WCF_DIR.'lib/util/FileUtil.class.php');
 		$res = array();

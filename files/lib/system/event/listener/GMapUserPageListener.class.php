@@ -2,6 +2,9 @@
 // wcf imports
 require_once(WCF_DIR.'lib/system/event/EventListener.class.php');
 
+// gmap imports
+require_once(WCF_DIR.'lib/data/gmap/GmapApiKey.class.php');
+
 /**
  * extends the userpage with the map - maybe also add the personal points
  *
@@ -42,9 +45,11 @@ class GMapUserPageListener implements EventListener {
 	}
 	
 	protected function assignVariables() {
-		if($this->coordinate) {
+		if ($this->coordinate) {
+			$gmapApiKey = new GmapApiKey();
 			WCF::getTPL()->assign(array(
-				'coordinate' => $this->coordinate
+				'coordinate' => $this->coordinate,
+				'gmap_api_key' => $gmapApiKey->getKey() // @todo: pass current url if possible
 			));
 			// if user position exists
 			WCF::getTPL()->append('additionalBoxes1', WCF::getTPL()->fetch('userProfileMapSide'));

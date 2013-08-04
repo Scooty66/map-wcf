@@ -4,6 +4,7 @@ require_once(WCF_DIR.'lib/page/AbstractPage.class.php');
 require_once(WCF_DIR.'lib/page/util/menu/PageMenu.class.php');
 require_once(WCF_DIR.'lib/page/util/menu/GmapMenu.class.php');
 require_once(WCF_DIR.'lib/data/gmap/GmapApi.class.php');
+require_once(WCF_DIR.'lib/data/gmap/GmapApiKey.class.php');
 
 /**
  * Returns the abstract page for for the Gooogle Map
@@ -21,13 +22,15 @@ class MapPage extends AbstractPage {
         public function assignVariables() {
                 parent::assignVariables();
                 
-                if($this->fromCache('hasFsockopen') == false) {
+                if ($this->fromCache('hasFsockopen') == false) {
 		        WCF::getTPL()->append('userMessages', '<div class="warning">'.WCF::getLanguage()->get('wcf.map.noConnectivity').'</div>');
 		}
 
+		$gmapApiKey = new GmapApiKey();
 		WCF::getTPL()->assign(array(
 			'allowSpidersToIndexThisPage' => true,
-			'gmapmenu' => GmapMenu::getInstance()
+			'gmapmenu' => GmapMenu::getInstance(),
+			'gmap_api_key' => $gmapApiKey->getKey() // @todo: pass current url if possible
 		));
         }
 
@@ -37,7 +40,7 @@ class MapPage extends AbstractPage {
 	public function show() {
 
 		// skip
-		if(!MODULE_GMAP) {
+		if (!MODULE_GMAP) {
 			throw new IllegalLinkException();
 		}
 
@@ -77,7 +80,7 @@ class MapPage extends AbstractPage {
 			'maxLifetime' => $maxLifetime
 		);
 
-		if(($val = @WCF::getCache()->getCacheSource()->get($cacheResource)) === null) {
+		if (($val = @WCF::getCache()->getCacheSource()->get($cacheResource)) === null) {
 			$val = false;
 			$val = $this->$method();
 			WCF::getCache()->getCacheSource()->set($cacheResource, $val);

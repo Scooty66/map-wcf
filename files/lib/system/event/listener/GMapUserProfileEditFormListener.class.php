@@ -18,7 +18,7 @@ class GMapUserProfileEditFormListener implements EventListener {
 	public function execute($eventObj, $className, $eventName) {
 
 		// skip
-		if(!MODULE_GMAP) {
+		if (!MODULE_GMAP) {
 			return;
 		}
 
