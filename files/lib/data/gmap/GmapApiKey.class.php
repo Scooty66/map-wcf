@@ -21,8 +21,18 @@ class GmapApiKey extends DatabaseObject {
 	 * @return string
 	 */
 	public function getKey($domain = '') {
-		$lines = defined('GMAP_API_KEY') ? GMAP_API_KEY : '';
-		// @todo unify new lines, explode by line, strip leading domain
-		return $line;
+		$apikey = defined('GMAP_API_KEY') ? GMAP_API_KEY : '';
+		$apikey = explode("\n", StringUtil::unifyNewlines($apikey));
+
+		// this is the way, almost all of the woltlab users really enter their api key
+		$apikey = $apikey[0];
+
+		// this is the way, woltlab wants the users to enter their api key
+		$apikey = explode(":", $apikey);
+		if(count($apikey) == 2) {
+			$apikey = $apikey[1];
+		}
+
+		return $apikey;
 	}
 }
