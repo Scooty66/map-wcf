@@ -81,7 +81,7 @@ class GmapApi extends DatabaseObject {
 			return $this->cache_search[$lookupstring];
 		}
 		
-		$url = 'http://maps.googleapis.com/maps/api/geocode/json?address='.$lookupstring.'&sensor=false';
+		$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$lookupstring.'&sensor=false';
 		if ($this->gmap_api_key) {
 			$url .= '&key='.$this->gmap_api_key;
 		}
